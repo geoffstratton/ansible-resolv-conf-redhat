@@ -1,0 +1,15 @@
+---
+- name: Verify
+  hosts: all
+
+  tasks:
+    - name: Check if resolv.conf is set up
+      command: grep -Fxq "8.8.8.8" /etc/resolv.conf
+      register: check_resolver
+      check_mode: no
+      ignore_errors: yes
+      changed_when: no
+      
+    - name: Assertion test for resolv.conf
+      assert:
+          that: check_resolver.rc == 0
